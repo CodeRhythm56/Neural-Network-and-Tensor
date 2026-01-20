@@ -74,3 +74,19 @@ for i, pred in enumerate(predictions):
     sqft = X_new[i][0]
     beds = X_new[i][1]
     print(f"House {i+1}: {sqft} sqft, {beds} beds -> Predicted Price: ${pred[0]:.2f}k")
+
+
+
+
+"""
+OUTPUT
+
+Training the model...
+Training finished
+
+Making predictions on new data:
+1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 39ms/step
+House 1: 1800 sqft, 3 beds -> Predicted Price: $332.47k
+House 2: 4000 sqft, 5 beds -> Predicted Price: $745.07k
+
+"""
