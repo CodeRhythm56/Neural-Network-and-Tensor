@@ -108,3 +108,40 @@ The `model.predict()` function generates output predictions for new input sample
 # Make a prediction on a new data point
 prediction = model.predict(new_data)
 ```
+
+## TensorFlow custom layer
+is made by subclassing Layer and initializing __init__, build and call methods.
+```python
+class CustomDenseLayer(Layer):
+    def __init__(self, units=32):
+        super(CustomDenseLayer, self).__init__()
+        self.units = units
+
+    def build(self, input_shape):
+        self.w = self.add_weight(shape=(input_shape[-1], self.units),
+                                 initializer='random_normal',
+                                 trainable=True)
+        self.b = self.add_weight(shape=(self.units,),
+                                 initializer='zeros',
+                                 trainable=True)
+    def call(self, inputs):
+        return tf.nn.relu(tf.matmul(inputs, self.w) + self.b)
+```
+Here, Build initializes and defines the weight and Call contains the forward pass computation logic. > Specifies how the input tensor(s) are processed to generate the output tensor(s) every time the layer is executed
+
+## TensorFlow Functional API
+Unlike sequential (API) where we stack layers on layers, functional api treats a layer as a function and can be called by passing a tensor which returns a tensor. This lets you pass in one function into anotherr. It creates a map instead of a stack. Its mostly used when you have multiple inputs and/or multiple outputs which sequential is unable to do.
+Example
+```python
+input = Input(shape=(64,64,3))
+x = Conv2D(64,(7,7), strides=2, padding='same')(input)
+x = BatchNormalization()(x)
+x = Activation('relu')(x)
+x = residual_block(x,64)
+x = residual_block(x,64)
+x = Flatten()(x)
+outputs = Dense(10, activation='softmax')(x)
+```
+note: above example is a CNN with ResNet architectures
+
+
